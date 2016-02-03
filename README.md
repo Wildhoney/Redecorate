@@ -1,2 +1,3 @@
 # Redecorate
-Simple module for reducing immutable nested properties in Redux applications.
+
+> Simple module for reducing immutable nested properties in Redux applications.
