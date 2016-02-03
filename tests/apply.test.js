@@ -1,67 +1,47 @@
 import test from 'ava';
 import 'babel-core/register';
-import {apply} from '../component/redecorate';
+import {apply, set, assign, push} from '../component/redecorate';
 
-test('modifying a single property', t => {
+test('modifying a simple property', t => {
 
     const state = {
         name: { first: 'David', last: 'Bowie' },
         age: 69
     };
 
-    const transformed = apply(state)('name.last', () => 'Butterfield');
-    t.same(transformed, { name: { first: 'David', last: 'Butterfield' }, age: 69 });
+    const a = apply(state)('name.last', () => 'Butterfield');
+    t.same(a, { name: { first: 'David', last: 'Butterfield' }, age: 69 });
 
-});
-
-test('modifying a multiple properties', t => {
-
-    const state = {
-        name: { first: 'David', last: 'Bowie' },
-        gender: 'male',
-        age: 69
-    };
-
-    const firstTransformation = apply(state)('name.last', () => 'Butterfield');
-    const secondTransformation = apply(firstTransformation)('name.first', () => 'Jeremy');
-    const transformed = apply(secondTransformation)('gender', () => 'androgynous');
-
-    t.same(transformed, { name: { first: 'Jeremy', last: 'Butterfield' }, gender: 'androgynous', age: 69 });
+    const b = apply(state)('name.last', set('Butterfield'));
+    t.same(b, { name: { first: 'David', last: 'Butterfield' }, age: 69 });
 
 });
 
 test('modifying object and including additional properties in object', t => {
 
-    const state = {
-        type: 'cities',
-        locations: {
-            firstPlace: 'London', secondPlace: 'Rio de Janeiro', thirdPlace: 'Hong Kong'
-        }
-    };
+    const state = { type: 'cities', locations: { first: 'London' } };
 
-    const transformed = apply(state)('locations', cursor => {
-        return { ...cursor, ...{ firstPlace: 'Moscow', fourthPlace: 'Kuala Lumpur' } };
-    });
+    const a = apply(state)('locations', cursor => ({ ...cursor, ...{ first: 'Moscow', second: 'Rio de Janeiro' } }));
+    t.same(a, { type: 'cities', locations: { first: 'Moscow', second: 'Rio de Janeiro' }});
 
-    t.same(transformed, { type: 'cities', locations: {
-        firstPlace: 'Moscow', secondPlace: 'Rio de Janeiro', thirdPlace: 'Hong Kong', fourthPlace: 'Kuala Lumpur' }
-    });
+    const b = apply(state)('locations', assign({ first: 'Moscow', second: 'Rio de Janeiro' }));
+    t.same(b, { type: 'cities', locations: { first: 'Moscow', second: 'Rio de Janeiro' }});
 
 });
 
 test('modifying an array by adding additional items', t => {
 
-    const state = {
-        name: 'Adam',
-        places: {
-            visited: ['Argentina', 'Malta', 'Russia', 'Barbados']
-        }
-    };
+    const state = { name: 'Adam', places: {
+        visited: ['Barbados', 'Russia']
+    }};
 
-    const transformed = apply(state)('places.visited', cursor => {
-        return [ ...cursor, 'Singapore' ];
-    });
+    const a = apply(state)('places.visited', cursor => [ ...cursor, 'Singapore' ]);
+    t.same(a, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Singapore'] } });
 
-    t.same(transformed, { name: 'Adam', places: { visited: ['Argentina', 'Malta', 'Russia', 'Barbados', 'Singapore'] } });
+    const b = apply(state)('places.visited', push(['Argentina']));
+    t.same(b, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina'] } });
+
+    const c = apply(state)('places.visited', push('Argentina'));
+    t.same(c, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina'] } });
 
 });

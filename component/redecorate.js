@@ -27,3 +27,36 @@ export function apply(state) {
     };
 
 }
+
+/**
+ * @method set
+ * @param {*} value
+ * @return {Function}
+ */
+export function set(value) {
+    return () => value;
+}
+
+/**
+ * @method assign
+ * @param {Object} properties
+ * @return {Function}
+ */
+export function assign(properties) {
+    return cursor => ({ ...cursor, ...properties });
+}
+
+/**
+ * @method push
+ * @param {Array|*} items
+ * @return {Function}
+ */
+export function push(items) {
+
+    if (Array.isArray(items)) {
+        return cursor => [ ...cursor, ...items ];
+    }
+
+    return cursor => [ ...cursor, items ];
+
+}
