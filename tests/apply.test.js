@@ -30,7 +30,7 @@ test('modifying a multiple properties', t => {
 
 });
 
-test('modifying object by including additional properties', t => {
+test('modifying object and including additional properties in object', t => {
 
     const state = {
         type: 'cities',
@@ -40,11 +40,28 @@ test('modifying object by including additional properties', t => {
     };
 
     const transformed = apply(state)('locations', cursor => {
-        return { ...cursor, ...{ fourthPlace: 'Kuala Lumpur' } };
+        return { ...cursor, ...{ firstPlace: 'Moscow', fourthPlace: 'Kuala Lumpur' } };
     });
 
     t.same(transformed, { type: 'cities', locations: {
-        firstPlace: 'London', secondPlace: 'Rio de Janeiro', thirdPlace: 'Hong Kong', fourthPlace: 'Kuala Lumpur' }
+        firstPlace: 'Moscow', secondPlace: 'Rio de Janeiro', thirdPlace: 'Hong Kong', fourthPlace: 'Kuala Lumpur' }
     });
+
+});
+
+test('modifying an array by adding additional items', t => {
+
+    const state = {
+        name: 'Adam',
+        places: {
+            visited: ['Argentina', 'Malta', 'Russia', 'Barbados']
+        }
+    };
+
+    const transformed = apply(state)('places.visited', cursor => {
+        return [ ...cursor, 'Singapore' ];
+    });
+
+    t.same(transformed, { name: 'Adam', places: { visited: ['Argentina', 'Malta', 'Russia', 'Barbados', 'Singapore'] } });
 
 });
