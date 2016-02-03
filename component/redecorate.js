@@ -1,4 +1,5 @@
 import objectAssign from 'object-assign';
+import {reject} from 'lodash';
 
 /**
  * @method apply
@@ -47,19 +48,66 @@ export function assign(x) {
 }
 
 /**
- * @method push
- * @param {Array} x
- * @return {Function}
+ * @method type
+ * @param {*} x
+ * @return {String}
  */
-export function push(...x) {
-    return cursor => [ ...cursor, ...x ];
+const type = x => {
+
+    if (Array.isArray(x))      return 'array';
+    if (typeof x === 'object') return 'object';
+    return                     null;
+
+};
+
+/**
+ * @method add
+ * @param {*} x
+ * @return {Function}
+ * @todo: Support multiple properties for "object".
+ */
+export function add(...x) {
+
+    return cursor => {
+
+        switch (type(cursor)) {
+
+            case 'array':
+                return [ ...cursor, ...x ];
+
+            case 'object':
+                return { ...cursor, ...{ ...x[0] }};
+
+            default:
+                return cursor;
+
+        }
+
+    };
+
 }
 
 /**
  * @method remove
- * @param {Array} x
+ * @param {*} x
  * @return {Function}
  */
 export function remove(...x) {
-    return cursor => cursor.filter(item => !~x.indexOf(item));
+
+    return cursor => {
+
+        switch (type(cursor)) {
+
+            case 'array':
+
+                switch (type(x[0])) {
+                    case 'object': return reject(cursor, x[0]);
+                    default: return cursor.filter(item => !~x.indexOf(item));
+                }
+
+            default: return cursor;
+
+        }
+
+    };
 }

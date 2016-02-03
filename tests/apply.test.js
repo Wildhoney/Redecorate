@@ -1,53 +1,121 @@
 import test from 'ava';
+import objectAssign from 'object-assign';
 import 'babel-core/register';
-import {apply, set, assign, push, remove} from '../component/redecorate';
+import {apply, set, assign, add, remove} from '../component/redecorate';
 
-test('modifying a simple property', t => {
+const state = {
+    name: { first: 'Adam', last: 'Timberlake' },
+    age: 30,
+    countries: {
+        latest: 'Buenos Aires',
+        all: ['Moscow', 'Rio de Janeiro', 'Singapore', 'Kuala Lumpur']
+    },
+    colleagues: [
+        { name: 'Ahmed' }, { name: 'JC' }, { name: 'Rich' }
+    ]
+};
 
-    const state = {
-        name: { first: 'David', last: 'Bowie' },
-        age: 69
-    };
-
-    const a = apply(state)('name.last', () => 'Butterfield');
-    t.same(a, { name: { first: 'David', last: 'Butterfield' }, age: 69 });
-
-    const b = apply(state)('name.last', set('Butterfield'));
-    t.same(b, { name: { first: 'David', last: 'Butterfield' }, age: 69 });
-
+test('string: able to set a property', t => {
+    const transformed = apply(state)('name.middle', cursor => 'Daniel');
+    t.same(transformed, objectAssign({}, state, {
+        name: objectAssign({}, state.name, {
+            middle: 'Daniel'
+        })
+    }));
 });
 
-test('modifying object and including additional properties in object', t => {
-
-    const state = { type: 'cities', locations: { first: 'London' }};
-
-    const a = apply(state)('locations', cursor => ({ ...cursor, ...{ first: 'Moscow', second: 'Rio de Janeiro' }}));
-    t.same(a, { type: 'cities', locations: { first: 'Moscow', second: 'Rio de Janeiro' }});
-
-    const b = apply(state)('locations', assign({ first: 'Moscow', second: 'Rio de Janeiro' }));
-    t.same(b, { type: 'cities', locations: { first: 'Moscow', second: 'Rio de Janeiro' }});
-
+test('string: able to set a property (using helper)', t => {
+    const transformed = apply(state)('name.middle', set('Daniel'));
+    t.same(transformed, objectAssign({}, state, {
+        name: objectAssign({}, state.name, {
+            middle: 'Daniel'
+        })
+    }));
 });
 
-test('modifying an array by adding additional items', t => {
+test('string: able to alter a property', t => {
+    const transformed = apply(state)('name.last', () => 'Butterfield');
+    t.same(transformed, objectAssign({}, state, {
+        name: objectAssign({}, state.name, {
+            last: 'Butterfield'
+        })
+    }));
+});
 
-    const state = { name: 'Adam', places: {
-        visited: ['Barbados', 'Russia']
-    }};
+test('string: able to alter a property (using helper)', t => {
+    const transformed = apply(state)('name.last', set('Butterfield'));
+    t.same(transformed, objectAssign({}, state, {
+        name: objectAssign({}, state.name, {
+            last: 'Butterfield'
+        })
+    }));
+});
 
-    const a = apply(state)('places.visited', cursor => [ ...cursor, 'Singapore' ]);
-    t.same(a, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Singapore'] }});
+test('array: able to push an item', t => {
+    const transformed = apply(state)('countries.all', cursor => [...cursor, 'Barcelona']);
+    t.same(transformed, objectAssign({}, state, {
+        countries: objectAssign({}, state.countries, {
+            all: [ ...state.countries.all, 'Barcelona' ]
+        })
+    }));
+});
 
-    const b = apply(state)('places.visited', push('Argentina'));
-    t.same(b, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina'] }});
+test('array: able to push an item (using helper)', t => {
+    const transformed = apply(state)('countries.all', add('Barcelona'));
+    t.same(transformed, objectAssign({}, state, {
+        countries: objectAssign({}, state.countries, {
+            all: [ ...state.countries.all, 'Barcelona' ]
+        })
+    }));
+});
 
-    const c = apply(state)('places.visited', push('Argentina', 'Hong Kong'));
-    t.same(c, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina', 'Hong Kong'] }});
+test('array: able to remove an item', t => {
+    const transformed = apply(state)('countries.all', cursor => cursor.filter(x => x !== 'Moscow'));
+    t.same(transformed, objectAssign({}, state, {
+        countries: objectAssign({}, state.countries, {
+            all: state.countries.all.filter(x => x !== 'Moscow')
+        })
+    }));
+});
 
-    const d = apply(state)('places.visited', remove('Russia'));
-    t.same(d, { name: 'Adam', places: { visited: ['Barbados'] }});
+test('array: able to remove an item (using helper)', t => {
+    const transformed = apply(state)('countries.all', remove('Moscow'));
+    t.same(transformed, objectAssign({}, state, {
+        countries: objectAssign({}, state.countries, {
+            all: state.countries.all.filter(x => x !== 'Moscow')
+        })
+    }));
+});
 
-    const e = apply(state)('places.visited', remove('Russia', 'Barbados'));
-    t.same(e, { name: 'Adam', places: { visited: [] }});
+test('object: able to push an item', t => {
+    const transformed = apply(state)('name', cursor => ({ ...cursor, ...{ middle: 'Daniel' }}));
+    t.same(transformed, objectAssign({}, state, {
+        name: objectAssign({}, state.name, {
+            middle: 'Daniel'
+        })
+    }));
+});
 
+test('object: able to push an item (using helper)', t => {
+    const transformed = apply(state)('name', add({ middle: 'Daniel', other: null }));
+    t.same(transformed, objectAssign({}, state, {
+        name: objectAssign({}, state.name, {
+            middle: 'Daniel',
+            other: null
+        })
+    }));
+});
+
+test('object: able to remove an item', t => {
+    const transformed = apply(state)('colleagues', cursor => cursor.filter(x => x.name !== 'JC'));
+    t.same(transformed, objectAssign({}, state, {
+        colleagues: state.colleagues.filter(x => x.name !== 'JC')
+    }));
+});
+
+test('object: able to remove an item (using helper)', t => {
+    const transformed = apply(state)('colleagues', remove({ name: 'JC' }));
+    t.same(transformed, objectAssign({}, state, {
+        colleagues: state.colleagues.filter(x => x.name !== 'JC')
+    }));
 });

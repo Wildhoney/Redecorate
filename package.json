@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "ava tests/*.test.js"
+    "test": "ava tests/*.test.js -v"
   },
   "devDependencies": {
     "ava": "^0.11.0",
@@ -13,6 +13,7 @@
   "version": "0.1.0",
   "main": "component/redecorate.js",
   "dependencies": {
+    "lodash": "^4.2.1",
     "object-assign": "^4.0.1"
   },
   "repository": {
