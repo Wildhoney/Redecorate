@@ -38,20 +38,38 @@ export function set(x) {
 }
 
 /**
- * @method conj
+ * @method assign
+ * @param {Object} x
+ * @return {Function}
+ */
+export function assign(x) {
+    return cursor => ({ ...cursor, ...x });
+}
+
+/**
+ * @method push
+ * @param {Array|*} x
+ * @return {Function}
+ */
+export function push(x) {
+
+    if (Array.isArray(x)) {
+        return cursor => [ ...cursor, ...x ];
+    }
+
+    return cursor => [ ...cursor, x ];
+
+}
+
+/**
+ * @method remove
  * @param {*} x
  * @return {Function}
  */
-export function conj(x) {
+export function remove(x) {
 
     return cursor => {
-
-        if (Array.isArray(cursor)) {
-            return Array.isArray(x) ? [ ...cursor, ...x ] : [ ...cursor, x ];
-        }
-
-        return { ...cursor, ...x };
-
-    };
+        return cursor.filter(item => item !== x);
+    }
 
 }
