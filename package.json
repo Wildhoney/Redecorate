@@ -1,15 +1,20 @@
 {
   "scripts": {
-    "test": "ava"
+    "test": "ava tests/*.test.js"
   },
   "devDependencies": {
-    "ava": "^0.11.0"
+    "ava": "^0.11.0",
+    "babel-core": "^6.4.5",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13"
   },
   "name": "redecorate",
   "description": "Simple module for reducing immutable nested properties in Redux applications.",
   "version": "0.1.0",
   "main": "component/redecorate.js",
-  "dependencies": {},
+  "dependencies": {
+    "object-assign": "^4.0.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Wildhoney/Redecorate.git"
