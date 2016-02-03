@@ -29,3 +29,22 @@ test('modifying a multiple properties', t => {
     t.same(transformed, { name: { first: 'Jeremy', last: 'Butterfield' }, gender: 'androgynous', age: 69 });
 
 });
+
+test('modifying object by including additional properties', t => {
+
+    const state = {
+        type: 'cities',
+        locations: {
+            firstPlace: 'London', secondPlace: 'Rio de Janeiro', thirdPlace: 'Hong Kong'
+        }
+    };
+
+    const transformed = apply(state)('locations', cursor => {
+        return { ...cursor, ...{ fourthPlace: 'Kuala Lumpur' } };
+    });
+
+    t.same(transformed, { type: 'cities', locations: {
+        firstPlace: 'London', secondPlace: 'Rio de Janeiro', thirdPlace: 'Hong Kong', fourthPlace: 'Kuala Lumpur' }
+    });
+
+});

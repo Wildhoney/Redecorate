@@ -15,7 +15,7 @@ export function apply(state) {
         if (parts.length === 1) {
 
             return objectAssign({}, state, {
-                [property]: reducer(state)
+                [property]: reducer(state[property])
             });
 
         }
