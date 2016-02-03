@@ -30,33 +30,28 @@ export function apply(state) {
 
 /**
  * @method set
- * @param {*} value
+ * @param {*} x
  * @return {Function}
  */
-export function set(value) {
-    return () => value;
+export function set(x) {
+    return () => x;
 }
 
 /**
- * @method assign
- * @param {Object} properties
+ * @method conj
+ * @param {*} x
  * @return {Function}
  */
-export function assign(properties) {
-    return cursor => ({ ...cursor, ...properties });
-}
+export function conj(x) {
 
-/**
- * @method push
- * @param {Array|*} items
- * @return {Function}
- */
-export function push(items) {
+    return cursor => {
 
-    if (Array.isArray(items)) {
-        return cursor => [ ...cursor, ...items ];
-    }
+        if (Array.isArray(cursor)) {
+            return Array.isArray(x) ? [ ...cursor, ...x ] : [ ...cursor, x ];
+        }
 
-    return cursor => [ ...cursor, items ];
+        return { ...cursor, ...x };
+
+    };
 
 }

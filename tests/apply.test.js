@@ -1,6 +1,6 @@
 import test from 'ava';
 import 'babel-core/register';
-import {apply, set, assign, push} from '../component/redecorate';
+import {apply, set, conj} from '../component/redecorate';
 
 test('modifying a simple property', t => {
 
@@ -24,7 +24,7 @@ test('modifying object and including additional properties in object', t => {
     const a = apply(state)('locations', cursor => ({ ...cursor, ...{ first: 'Moscow', second: 'Rio de Janeiro' } }));
     t.same(a, { type: 'cities', locations: { first: 'Moscow', second: 'Rio de Janeiro' }});
 
-    const b = apply(state)('locations', assign({ first: 'Moscow', second: 'Rio de Janeiro' }));
+    const b = apply(state)('locations', conj({ first: 'Moscow', second: 'Rio de Janeiro' }));
     t.same(b, { type: 'cities', locations: { first: 'Moscow', second: 'Rio de Janeiro' }});
 
 });
@@ -38,10 +38,10 @@ test('modifying an array by adding additional items', t => {
     const a = apply(state)('places.visited', cursor => [ ...cursor, 'Singapore' ]);
     t.same(a, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Singapore'] } });
 
-    const b = apply(state)('places.visited', push(['Argentina']));
+    const b = apply(state)('places.visited', conj(['Argentina']));
     t.same(b, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina'] } });
 
-    const c = apply(state)('places.visited', push('Argentina'));
+    const c = apply(state)('places.visited', conj('Argentina'));
     t.same(c, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina'] } });
 
 });
