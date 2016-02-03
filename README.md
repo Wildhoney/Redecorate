@@ -5,11 +5,15 @@
 ## Getting Started
 
 ```javascript
-import r from 'redecorate';
+import {apply} from 'redecorate';
 
 // ...
 
-const model = r(state)('name.places', cursor => {
+const model = apply(state)('name.places', cursor => {
     return [ ...cursor, { name: 'Malta' } ];
 });
 ```
+
+## Helpers
+
+Common patterns are found through Redux, which is why Redecorate provides an array of helper functions to make the reducing process simpler and more readable for fellow developers.
