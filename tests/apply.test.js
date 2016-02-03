@@ -19,9 +19,9 @@ test('modifying a simple property', t => {
 
 test('modifying object and including additional properties in object', t => {
 
-    const state = { type: 'cities', locations: { first: 'London' } };
+    const state = { type: 'cities', locations: { first: 'London' }};
 
-    const a = apply(state)('locations', cursor => ({ ...cursor, ...{ first: 'Moscow', second: 'Rio de Janeiro' } }));
+    const a = apply(state)('locations', cursor => ({ ...cursor, ...{ first: 'Moscow', second: 'Rio de Janeiro' }}));
     t.same(a, { type: 'cities', locations: { first: 'Moscow', second: 'Rio de Janeiro' }});
 
     const b = apply(state)('locations', assign({ first: 'Moscow', second: 'Rio de Janeiro' }));
@@ -36,15 +36,18 @@ test('modifying an array by adding additional items', t => {
     }};
 
     const a = apply(state)('places.visited', cursor => [ ...cursor, 'Singapore' ]);
-    t.same(a, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Singapore'] } });
+    t.same(a, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Singapore'] }});
 
-    const b = apply(state)('places.visited', push(['Argentina']));
-    t.same(b, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina'] } });
+    const b = apply(state)('places.visited', push('Argentina'));
+    t.same(b, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina'] }});
 
-    const c = apply(state)('places.visited', push('Argentina'));
-    t.same(c, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina'] } });
+    const c = apply(state)('places.visited', push('Argentina', 'Hong Kong'));
+    t.same(c, { name: 'Adam', places: { visited: ['Barbados', 'Russia', 'Argentina', 'Hong Kong'] }});
 
     const d = apply(state)('places.visited', remove('Russia'));
-    t.same(d, { name: 'Adam', places: { visited: ['Barbados'] } });
+    t.same(d, { name: 'Adam', places: { visited: ['Barbados'] }});
+
+    const e = apply(state)('places.visited', remove('Russia', 'Barbados'));
+    t.same(e, { name: 'Adam', places: { visited: [] }});
 
 });

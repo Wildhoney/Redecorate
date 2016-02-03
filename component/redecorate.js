@@ -48,28 +48,18 @@ export function assign(x) {
 
 /**
  * @method push
- * @param {Array|*} x
+ * @param {Array} x
  * @return {Function}
  */
-export function push(x) {
-
-    if (Array.isArray(x)) {
-        return cursor => [ ...cursor, ...x ];
-    }
-
-    return cursor => [ ...cursor, x ];
-
+export function push(...x) {
+    return cursor => [ ...cursor, ...x ];
 }
 
 /**
  * @method remove
- * @param {*} x
+ * @param {Array} x
  * @return {Function}
  */
-export function remove(x) {
-
-    return cursor => {
-        return cursor.filter(item => item !== x);
-    }
-
+export function remove(...x) {
+    return cursor => cursor.filter(item => !~x.indexOf(item));
 }
