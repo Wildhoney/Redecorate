@@ -39,13 +39,13 @@ const state = {
 We can use the `set` helper to modify properties on the `age` literal:
 
 ```javascript
-apply(state)('age', cursor => 47);
+apply(state)('age', set(47));
 ```
 
-Further we're able to able to use the `set` function for adding properties to the `name` object:
+Furthermore we're able to able to use the `set` function for adding properties to the `name` object:
 
 ```javascript
-apply(state)('name.middle', cursor => 'Dean');
+apply(state)('name.middle', set('Dean'));
 ```
 
 Adding an item to the `songs` is as easy as using the `add` function &mdash; you can pass multiple arguments to add many items onto the array:
