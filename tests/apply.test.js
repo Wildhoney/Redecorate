@@ -97,11 +97,12 @@ test('object: able to push an item', t => {
 });
 
 test('object: able to push an item (using helper)', t => {
-    const transformed = apply(state)('name', add({ middle: 'Daniel', other: null }));
+    const transformed = apply(state)('name', add({ middle: 'Daniel', other: null }, { patronymic: false }));
     t.same(transformed, objectAssign({}, state, {
         name: objectAssign({}, state.name, {
             middle: 'Daniel',
-            other: null
+            other: null,
+            patronymic: false
         })
     }));
 });

@@ -76,7 +76,8 @@ export function add(...x) {
                 return [ ...cursor, ...x ];
 
             case 'object':
-                return { ...cursor, ...{ ...x[0] }};
+                const combined = objectAssign({}, ...x);
+                return { ...cursor, ...{ ...combined }};
 
             default:
                 return cursor;
@@ -101,6 +102,7 @@ export function remove(...x) {
             case 'array':
 
                 switch (type(x[0])) {
+
                     case 'object': return reject(cursor, x[0]);
                     default: return cursor.filter(item => !~x.indexOf(item));
                 }
