@@ -2,6 +2,9 @@
 
 > Simple module for reducing immutable nested properties in Redux applications.
 
+<img width="200" src="http://cdn.flaticon.com/svg/26/26751.svg"
+     align="right" title="Redecorate" alt="Redecorate" />
+
 ## Getting Started
 
 ```javascript
