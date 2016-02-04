@@ -1,7 +1,7 @@
 import test from 'ava';
 import objectAssign from 'object-assign';
 import 'babel-core/register';
-import {apply, set, assign, add, remove} from '../component/redecorate';
+import {apply, set, assign, add, remove} from '../src/redecorate';
 
 const state = {
     name: { first: 'Adam', last: 'Timberlake' },
