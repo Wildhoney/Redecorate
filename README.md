@@ -1,6 +1,3 @@
-<img width="100" src="http://cdn.flaticon.com/svg/26/26751.svg"
-     align="right" title="Redecorate" alt="Redecorate" />
-     
 # Redecorate
 
 > Simple module for reducing immutable nested properties in Redux applications.
