@@ -13,11 +13,12 @@
   },
   "name": "redecorate",
   "description": "Simple module for reducing immutable nested properties in Redux applications.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/redecorate.js",
   "dependencies": {
     "lodash": "^4.2.1",
-    "object-assign": "^4.0.1"
+    "object-assign": "^4.0.1",
+    "seamless-immutable": "^5.0.1"
   },
   "repository": {
     "type": "git",
