@@ -1,5 +1,5 @@
 import objectAssign from 'object-assign';
-import {reject} from 'lodash';
+import {reject, matches} from 'lodash';
 
 /**
  * @method apply
@@ -64,7 +64,6 @@ const type = x => {
  * @method add
  * @param {*} x
  * @return {Function}
- * @todo: Support multiple properties for "object".
  */
 export function add(...x) {
 
@@ -101,10 +100,16 @@ export function remove(...x) {
 
             case 'array':
 
-                switch (type(x[0])) {
+                switch (type(x)) {
 
-                    case 'object': return reject(cursor, x[0]);
-                    default: return cursor.filter(item => !~x.indexOf(item));
+                    case 'array':
+                        return cursor.filter(current => {
+                            return !x.filter(matcher => matches(matcher)(current)).length;
+                        });
+
+                    default:
+                        return cursor.filter(item => !~x.indexOf(item));
+
                 }
 
             default: return cursor;
