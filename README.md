@@ -20,7 +20,7 @@ const model = apply(state)('name.places', cursor => {
 
 ## Helpers
 
-Common patterns are found through Redux, which is why Redecorate provides an array of helper functions to make the reducing process simpler and more readable for fellow developers.
+Common patterns are found throughout Redux's reducers, which is why Redecorate provides a handful of helper functions to make the reducing process simpler and more readable for fellow developers.
 
 In the following examples we'll assume we have the following state:
 

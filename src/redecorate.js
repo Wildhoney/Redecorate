@@ -54,9 +54,15 @@ export function assign(x) {
  */
 const type = x => {
 
-    if (Array.isArray(x))      return 'array';
-    if (typeof x === 'object') return 'object';
-    return                     null;
+    if (Array.isArray(x)) {
+        return 'array';
+    }
+
+    if (typeof x === 'object') {
+        return 'object';
+    }
+
+    return null;
 
 };
 
@@ -112,7 +118,8 @@ export function remove(...x) {
 
                 }
 
-            default: return cursor;
+            default:
+                return cursor;
 
         }
 

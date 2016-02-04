@@ -122,8 +122,14 @@ module.exports =
 	 */
 	var type = function type(x) {
 
-	    if (Array.isArray(x)) return 'array';
-	    if ((typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object') return 'object';
+	    if (Array.isArray(x)) {
+	        return 'array';
+	    }
+
+	    if ((typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object') {
+	        return 'object';
+	    }
+
 	    return null;
 	};
 
