@@ -39,15 +39,6 @@ export function set(x) {
 }
 
 /**
- * @method assign
- * @param {Object} x
- * @return {Function}
- */
-export function assign(x) {
-    return cursor => ({ ...cursor, ...x });
-}
-
-/**
  * @method type
  * @param {*} x
  * @return {String}
