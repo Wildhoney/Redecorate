@@ -18,6 +18,8 @@ const model = apply(state)('name.places', cursor => {
 });
 ```
 
+Redecorate allows you to easily handle nested state in your Redux reducers &ndash; even after specialising your reducers using `combineReducers`.
+
 ## Helpers
 
 Common patterns are found throughout Redux's reducers, which is why Redecorate provides a handful of helper functions to make the reducing process simpler and more readable for fellow developers.
