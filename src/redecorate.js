@@ -1,5 +1,5 @@
 import objectAssign from 'object-assign';
-import {matches} from 'lodash';
+import { matches } from 'lodash';
 
 /**
  * @method apply
