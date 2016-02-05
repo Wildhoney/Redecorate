@@ -1,6 +1,5 @@
 import objectAssign from 'object-assign';
 import {matches} from 'lodash';
-import Immutable from 'seamless-immutable';
 
 /**
  * @method apply
@@ -16,11 +15,8 @@ export function apply(state) {
 
         if (parts.length === 1) {
 
-            console.log(Object.isFrozen(state[property]));
-            const immutable = Object.isFrozen(state[property]) ? state[property] : new Immutable(state[property]);
-
             return objectAssign({}, state, {
-                [property]: reducer(immutable)
+                [property]: reducer(state[property])
             });
 
         }
