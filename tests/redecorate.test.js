@@ -25,8 +25,8 @@ test('(string) Should be able to set a simple property;', t => {
     const func = apply(state)('name.middle', cursor => 'Daniel');
     const helper = apply(state)('name.middle', set('Daniel'));
 
-    t.same(func, expected);
-    t.same(helper, expected);
+    t.deepEqual(func, expected);
+    t.deepEqual(helper, expected);
 
 });
 
@@ -41,8 +41,8 @@ test('(string) Should be able to modify a property', t => {
     const func = apply(state)('name.last', () => 'Butterfield');
     const helper = apply(state)('name.last', set('Butterfield'));
 
-    t.same(func, expected);
-    t.same(helper, expected);
+    t.deepEqual(func, expected);
+    t.deepEqual(helper, expected);
 
 });
 
@@ -57,8 +57,8 @@ test('(array)  Should be able to push an item onto a list', t => {
     const func = apply(state)('countries.all', cursor => [...cursor, 'Barcelona']);
     const helper = apply(state)('countries.all', add('Barcelona'));
 
-    t.same(func, expected);
-    t.same(helper, expected);
+    t.deepEqual(func, expected);
+    t.deepEqual(helper, expected);
 
 });
 
@@ -73,8 +73,8 @@ test('(array)  Should be able to remove an item from a list', t => {
     const func = apply(state)('countries.all', cursor => cursor.filter(x => x !== 'Moscow'));
     const helper = apply(state)('countries.all', remove('Moscow'));
 
-    t.same(func, expected);
-    t.same(helper, expected);
+    t.deepEqual(func, expected);
+    t.deepEqual(helper, expected);
 
 });
 
@@ -91,8 +91,8 @@ test('(object) Should be able to add multiple items to the object', t => {
     const func = apply(state)('name', cursor => ({ ...cursor, ...{ middle: 'Daniel', other: null, patronymic: false }}));
     const helper = apply(state)('name', add({ middle: 'Daniel', other: null }, { patronymic: false }));
 
-    t.same(func, expected);
-    t.same(helper, expected);
+    t.deepEqual(func, expected);
+    t.deepEqual(helper, expected);
 
 });
 
@@ -105,8 +105,8 @@ test('(object) Should be able to remove an object from a list', t => {
     const func = apply(state)('colleagues', cursor => cursor.filter(x => x.name !== 'JC'));
     const helper = apply(state)('colleagues', remove({ name: 'JC', age: 40 }));
 
-    t.same(func, expected);
-    t.same(helper, expected);
+    t.deepEqual(func, expected);
+    t.deepEqual(helper, expected);
 
 });
 
@@ -119,7 +119,7 @@ test('(object) Should be able to remove multiple objects from a list', t => {
     const func = apply(state)('colleagues', cursor => cursor.filter(x => !(x.name === 'JC' || x.age === 42)));
     const helper = apply(state)('colleagues', remove({ name: 'JC' }, { age: 42 }));
 
-    t.same(func, expected);
-    t.same(helper, expected);
+    t.deepEqual(func, expected);
+    t.deepEqual(helper, expected);
 
 });
