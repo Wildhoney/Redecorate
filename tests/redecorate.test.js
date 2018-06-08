@@ -1,5 +1,4 @@
 import test from 'ava';
-import objectAssign from 'object-assign';
 import {apply, set, assign, add, remove} from '../dist/redecorate';
 
 const state = {
@@ -16,11 +15,7 @@ const state = {
 
 test('(string) Should be able to set a simple property;', t => {
 
-    const expected = objectAssign({}, state, {
-        name: objectAssign({}, state.name, {
-            middle: 'Daniel'
-        })
-    });
+    const expected = { ...state, name: { ...state.name, middle: 'Daniel' } };
 
     const func = apply(state)('name.middle', cursor => 'Daniel');
     const helper = apply(state)('name.middle', set('Daniel'));
@@ -32,11 +27,7 @@ test('(string) Should be able to set a simple property;', t => {
 
 test('(string) Should be able to modify a property', t => {
 
-    const expected = objectAssign({}, state, {
-        name: objectAssign({}, state.name, {
-            last: 'Butterfield'
-        })
-    });
+    const expected = { ...state, name: { ...state.name, last: 'Butterfield' } };
 
     const func = apply(state)('name.last', () => 'Butterfield');
     const helper = apply(state)('name.last', set('Butterfield'));
@@ -48,11 +39,10 @@ test('(string) Should be able to modify a property', t => {
 
 test('(array)  Should be able to push an item onto a list', t => {
 
-    const expected = objectAssign({}, state, {
-        countries: objectAssign({}, state.countries, {
-            all: [ ...state.countries.all, 'Barcelona' ]
-        })
-    });
+    const expected = {
+        ...state,
+        countries: { ...state.countries, all: [ ...state.countries.all, 'Barcelona' ] }
+    };
 
     const func = apply(state)('countries.all', cursor => [...cursor, 'Barcelona']);
     const helper = apply(state)('countries.all', add('Barcelona'));
@@ -64,11 +54,10 @@ test('(array)  Should be able to push an item onto a list', t => {
 
 test('(array)  Should be able to remove an item from a list', t => {
 
-    const expected = objectAssign({}, state, {
-        countries: objectAssign({}, state.countries, {
-            all: state.countries.all.filter(x => x !== 'Moscow')
-        })
-    });
+    const expected = {
+        ...state,
+        countries: { ...state.countries, all: state.countries.all.filter(x => x !== 'Moscow') }
+    };
 
     const func = apply(state)('countries.all', cursor => cursor.filter(x => x !== 'Moscow'));
     const helper = apply(state)('countries.all', remove('Moscow'));
@@ -80,13 +69,13 @@ test('(array)  Should be able to remove an item from a list', t => {
 
 test('(object) Should be able to add multiple items to the object', t => {
 
-    const expected = objectAssign({}, state, {
-        name: objectAssign({}, state.name, {
-            middle: 'Daniel',
-            other: null,
-            patronymic: false
-        })
-    });
+    const expected = {
+        ...state,
+        name: {
+            ...state.name,
+            ...{ middle: 'Daniel', other: null, patronymic: false }
+        }
+    };
 
     const func = apply(state)('name', cursor => ({ ...cursor, ...{ middle: 'Daniel', other: null, patronymic: false }}));
     const helper = apply(state)('name', add({ middle: 'Daniel', other: null }, { patronymic: false }));
@@ -98,9 +87,10 @@ test('(object) Should be able to add multiple items to the object', t => {
 
 test('(object) Should be able to remove an object from a list', t => {
 
-    const expected = objectAssign({}, state, {
+    const expected = {
+        ...state,
         colleagues: state.colleagues.filter(x => x.name !== 'JC')
-    });
+    };
 
     const func = apply(state)('colleagues', cursor => cursor.filter(x => x.name !== 'JC'));
     const helper = apply(state)('colleagues', remove({ name: 'JC', age: 40 }));
@@ -112,9 +102,10 @@ test('(object) Should be able to remove an object from a list', t => {
 
 test('(object) Should be able to remove multiple objects from a list', t => {
 
-    const expected = objectAssign({}, state, {
+    const expected = {
+        ...state,
         colleagues: state.colleagues.filter(x => x.name !== 'JC' && x.age !== 42)
-    });
+    };
 
     const func = apply(state)('colleagues', cursor => cursor.filter(x => !(x.name === 'JC' || x.age === 42)));
     const helper = apply(state)('colleagues', remove({ name: 'JC' }, { age: 42 }));

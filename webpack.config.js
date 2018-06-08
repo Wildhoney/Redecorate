@@ -1,18 +1,11 @@
-const webpack = require('webpack');
-
 module.exports = {
     entry: './src/redecorate.js',
+    mode: process.env.NODE_ENV || 'development',
     output: {
-        filename: 'dist/redecorate.js',
+        filename: 'redecorate.js',
         libraryTarget: 'commonjs2'
     },
     module: {
-        loaders: [
-            {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/i
-            }
-        ]
+        rules: [{ test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/i }]
     }
 };
