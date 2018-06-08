@@ -1,11 +1,5 @@
-import objectAssign from 'object-assign';
 import { matches } from 'lodash';
 
-/**
- * @method apply
- * @param {Object} state
- * @return {Function}
- */
 export function apply(state) {
 
     return (property, reducer) => {
@@ -14,9 +8,7 @@ export function apply(state) {
         const first = parts[0];
 
         if (parts.length === 1) {
-
             return { ...state, [property]: reducer(state[property]) };
-
         }
 
         return { ...state, [first]: apply(state[first])(parts.slice(1).join('.'), reducer) };
@@ -25,20 +17,10 @@ export function apply(state) {
 
 }
 
-/**
- * @method set
- * @param {*} x
- * @return {Function}
- */
 export function set(x) {
     return () => x;
 }
 
-/**
- * @method type
- * @param {*} x
- * @return {String}
- */
 const type = x => {
 
     if (Array.isArray(x)) {
@@ -53,11 +35,6 @@ const type = x => {
 
 };
 
-/**
- * @method add
- * @param {*} x
- * @return {Function}
- */
 export function add(...x) {
 
     return cursor => {
@@ -81,11 +58,6 @@ export function add(...x) {
 
 }
 
-/**
- * @method remove
- * @param {*} x
- * @return {Function}
- */
 export function remove(...x) {
 
     return cursor => {
@@ -93,7 +65,6 @@ export function remove(...x) {
         switch (type(cursor)) {
 
             case 'array':
-
                 switch (type(x)) {
 
                     case 'array':
