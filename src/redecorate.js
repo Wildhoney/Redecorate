@@ -15,15 +15,11 @@ export function apply(state) {
 
         if (parts.length === 1) {
 
-            return objectAssign({}, state, {
-                [property]: reducer(state[property])
-            });
+            return { ...state, [property]: reducer(state[property]) };
 
         }
 
-        return objectAssign({}, state, {
-            [first]: apply(state[first])(parts.slice(1).join('.'), reducer)
-        });
+        return { ...state, [first]: apply(state[first])(parts.slice(1).join('.'), reducer) };
 
     };
 
@@ -71,10 +67,11 @@ export function add(...x) {
             case 'array':
                 return [ ...cursor, ...x ];
 
-            case 'object':
-                const combined = objectAssign({}, ...x);
-                return { ...cursor, ...{ ...combined }};
-
+            case 'object': {
+                let combined = {};
+                x.map(value => combined = { ...combined, ...value });
+                return { ...cursor, ...combined };
+            }
             default:
                 return cursor;
 
